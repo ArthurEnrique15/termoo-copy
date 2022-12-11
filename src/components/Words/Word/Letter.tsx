@@ -1,13 +1,23 @@
+import { useState } from "react"
+
 type LetterProps = {
   index: number
   isActive: boolean
+  correctWord: string[]
+  wordIsComplete: boolean
   handleLetterChange: (value: any, index: number) => void
   handleEnterPress: () => void
 }
 
-export function Letter({ index, isActive, handleLetterChange, handleEnterPress }: LetterProps) {
+export function Letter(props: LetterProps) {
+  const { index, isActive, correctWord, wordIsComplete, handleLetterChange, handleEnterPress } = props
+
+  const [letter, setLetter] = useState('')
+
+
   const handleChange = (event: any) => {
     const { value } = event.target;
+    setLetter(value);
     handleLetterChange(value, index);
   };
 
@@ -16,6 +26,25 @@ export function Letter({ index, isActive, handleLetterChange, handleEnterPress }
       handleEnterPress()
     }
   };
+
+  let className = 'text-center uppercase text-5xl w-20 h-20 border-4 border-brand-500 rounded-md text-white'
+
+  if (!isActive && !wordIsComplete) {
+    className = className + ' bg-gray-200'
+  }
+
+  if (wordIsComplete) {
+    const letterIsCorrect = letter === correctWord[index]
+    const letterExistsInWord = correctWord.includes(letter)
+
+    if (letterIsCorrect) {
+      className = className + ' bg-green-400'
+    } else if (letterExistsInWord) {
+      className = className + ' bg-yellow-400'
+    } else {
+      className = className + ' bg-gray-400'
+    }
+  }
 
   return (
     <div className="m-1">
@@ -26,7 +55,7 @@ export function Letter({ index, isActive, handleLetterChange, handleEnterPress }
         onChange={handleChange} 
         onKeyDown={handleKeyDown}
         maxLength={1} 
-        className="text-center uppercase text-5xl w-20 h-20 border-4 border-brand-500 rounded-md text-white"
+        className={className}
       />
     </div>
   )

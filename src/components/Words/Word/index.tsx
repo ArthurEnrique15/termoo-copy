@@ -3,6 +3,8 @@ import { Letter } from "./Letter";
 
 const WORD_SIZE = 5;
 
+const correctWord = ['a', 'p', 'i', 't', 'o']
+
 type WordProps = {
   wordPosition: number
   wordActive: number
@@ -11,6 +13,7 @@ type WordProps = {
 
 export function Word({ wordPosition, wordActive, handleWordComplete }: WordProps) {
   const [data] = useState([...Array(WORD_SIZE).keys()]);
+  const [wordIsComplete, setWordIsComplete] = useState(false);
 
   const word = ['', '', '', '', '']
 
@@ -22,6 +25,7 @@ export function Word({ wordPosition, wordActive, handleWordComplete }: WordProps
   function handleEnterPress() {
     const wordIsComplete = word.every((letter) => letter !== '');
     if (wordIsComplete) {
+      setWordIsComplete(true);
       handleWordComplete(word);
     } else {
       console.log('only 5 letter words!')
@@ -35,6 +39,8 @@ export function Word({ wordPosition, wordActive, handleWordComplete }: WordProps
           <Letter 
             index={index} 
             isActive={wordPosition === wordActive} 
+            correctWord={correctWord}
+            wordIsComplete={wordIsComplete}
             handleLetterChange={handleLetterChange} 
             handleEnterPress={handleEnterPress}
           />
