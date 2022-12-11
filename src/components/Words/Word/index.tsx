@@ -4,16 +4,18 @@ import { Letter } from "./Letter";
 const WORD_SIZE = 5;
 
 type WordProps = {
+  wordPosition: number
+  wordActive: number
   handleWordComplete: (word: string[]) => void
 }
 
-export function Word({ handleWordComplete }: WordProps) {
+export function Word({ wordPosition, wordActive, handleWordComplete }: WordProps) {
   const [data] = useState([...Array(WORD_SIZE).keys()]);
 
   const word = ['', '', '', '', '']
 
-  function handleLetterChange(value: string, index: number) {
-    word[index] = value;
+  function handleLetterChange(value: string, letterIndex: number) {
+    word[letterIndex] = value;
     console.log('word: ', word);
   }
 
@@ -30,7 +32,12 @@ export function Word({ handleWordComplete }: WordProps) {
     <div className="flex">
       {data.map((data, index) => (
         <div key={index}>
-          <Letter index={index} handleLetterChange={handleLetterChange} handleEnterPress={handleEnterPress} />
+          <Letter 
+            index={index} 
+            isActive={wordPosition === wordActive} 
+            handleLetterChange={handleLetterChange} 
+            handleEnterPress={handleEnterPress}
+          />
         </div>
       ))}
     </div>

@@ -1,10 +1,11 @@
 type LetterProps = {
   index: number
+  isActive: boolean
   handleLetterChange: (value: any, index: number) => void
   handleEnterPress: () => void
 }
 
-export function Letter({ index, handleLetterChange, handleEnterPress }: LetterProps) {
+export function Letter({ index, isActive, handleLetterChange, handleEnterPress }: LetterProps) {
   const handleChange = (event: any) => {
     const { value } = event.target;
     handleLetterChange(value, index);
@@ -21,6 +22,7 @@ export function Letter({ index, handleLetterChange, handleEnterPress }: LetterPr
       <input 
         id="letter" 
         autoComplete="off" 
+        { ...isActive ? {disabled: false} : {disabled: true} }
         onChange={handleChange} 
         onKeyDown={handleKeyDown}
         maxLength={1} 
