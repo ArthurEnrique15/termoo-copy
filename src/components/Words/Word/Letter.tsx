@@ -14,11 +14,12 @@ export function Letter(props: LetterProps) {
 
   const [letter, setLetter] = useState('')
 
-
   const handleChange = (event: any) => {
-    const { value } = event.target;
-    setLetter(value);
-    handleLetterChange(value, index);
+    const result = event.target.value.replace(/[^a-z]/gi, '');
+    setLetter(result);
+    if (result) {
+      handleLetterChange(result, index);
+    }
   };
 
   const handleKeyDown = (event: any) => {
@@ -50,7 +51,9 @@ export function Letter(props: LetterProps) {
     <div className="m-1">
       <input 
         id="letter" 
+        type="text"
         autoComplete="off" 
+        value={letter}
         { ...isActive ? {disabled: false} : {disabled: true} }
         onChange={handleChange} 
         onKeyDown={handleKeyDown}
