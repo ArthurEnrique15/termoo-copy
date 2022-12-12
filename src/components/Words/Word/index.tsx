@@ -5,6 +5,8 @@ const WORD_SIZE = 5;
 
 const correctWord = ['a', 'p', 'i', 't', 'o']
 
+export type WordStatus = 'active' | 'inactive' | 'done'
+
 type WordProps = {
   wordPosition: number
   wordActive: number
@@ -19,7 +21,6 @@ export function Word({ wordPosition, wordActive, handleWordComplete }: WordProps
 
   function handleLetterChange(value: string, letterIndex: number) {
     word[letterIndex] = value;
-    console.log('word: ', word);
   }
 
   function handleEnterPress() {
@@ -32,20 +33,29 @@ export function Word({ wordPosition, wordActive, handleWordComplete }: WordProps
     }
   }
 
+  function getWordStatus(): WordStatus {
+    if (wordIsComplete) {
+      return 'done'
+    } else if (wordPosition === wordActive) {
+      return 'active'
+    } else {
+      return 'inactive'
+    }
+  }
+
   return (
-    <div className="flex">
+    <fieldset className="flex" { ...(wordPosition === wordActive) ? {disabled: false} : {disabled: true} }>
       {data.map((data, index) => (
         <div key={index}>
           <Letter 
             index={index} 
-            isActive={wordPosition === wordActive} 
+            wordStatus={getWordStatus()}
             correctWord={correctWord}
-            wordIsComplete={wordIsComplete}
             handleLetterChange={handleLetterChange} 
             handleEnterPress={handleEnterPress}
           />
         </div>
       ))}
-    </div>
+    </fieldset>
   )
 }

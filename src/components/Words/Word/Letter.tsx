@@ -1,16 +1,17 @@
 import { useState } from "react"
+import { WordStatus } from "."
+
 
 type LetterProps = {
   index: number
-  isActive: boolean
+  wordStatus: WordStatus
   correctWord: string[]
-  wordIsComplete: boolean
   handleLetterChange: (value: any, index: number) => void
   handleEnterPress: () => void
 }
 
 export function Letter(props: LetterProps) {
-  const { index, isActive, correctWord, wordIsComplete, handleLetterChange, handleEnterPress } = props
+  const { index, correctWord, wordStatus, handleLetterChange, handleEnterPress } = props
 
   const [letter, setLetter] = useState('')
 
@@ -28,23 +29,35 @@ export function Letter(props: LetterProps) {
     }
   };
 
-  let className = 'text-center uppercase text-5xl w-20 h-20 border-4 border-brand-500 rounded-md text-white'
+  let className = `
+    text-center uppercase text-5xl w-20 h-20 border-4 border-purple-900 rounded-md 
+    focus:border-purple-600 focus:ring-purple-600 focus:ring-1 focus:outline-none
+  `
 
-  if (!isActive && !wordIsComplete) {
-    className = className + ' bg-gray-200'
-  }
+  switch (wordStatus) {
+    case 'done':
+      const letterIsCorrect = letter === correctWord[index]
+      const letterExistsInWord = correctWord.includes(letter)
 
-  if (wordIsComplete) {
-    const letterIsCorrect = letter === correctWord[index]
-    const letterExistsInWord = correctWord.includes(letter)
+      if (letterIsCorrect) {
+        className = className + ' bg-green-500'
+      } else if (letterExistsInWord) {
+        className = className + ' bg-yellow-500'
+      } else {
+        className = className + ' bg-purple-900'
+      }
+      break;
 
-    if (letterIsCorrect) {
-      className = className + ' bg-green-400'
-    } else if (letterExistsInWord) {
-      className = className + ' bg-yellow-400'
-    } else {
-      className = className + ' bg-gray-400'
-    }
+    case 'active':
+      className = className + ' bg-gray-700'
+      break;
+
+    case 'inactive':
+      className = className + ' bg-gray-800'
+      break;
+
+    default:
+      break;
   }
 
   return (
@@ -54,7 +67,6 @@ export function Letter(props: LetterProps) {
         type="text"
         autoComplete="off" 
         value={letter}
-        { ...isActive ? {disabled: false} : {disabled: true} }
         onChange={handleChange} 
         onKeyDown={handleKeyDown}
         maxLength={1} 
