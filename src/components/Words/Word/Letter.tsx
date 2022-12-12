@@ -44,7 +44,7 @@ export function Letter(props: LetterProps) {
       } else if (letterExistsInWord) {
         className = className + ' bg-yellow-500'
       } else {
-        className = className + ' bg-purple-900'
+        className = className + ' bg-gray-900'
       }
       break;
 
