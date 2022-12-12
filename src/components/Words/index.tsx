@@ -14,7 +14,7 @@ export function Words() {
   }
   
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mb-40">
       {data.map((data, index) => (
         <div key={index}>
           <Word wordPosition={index} wordActive={wordActive} handleWordComplete={handleWordComplete} />
