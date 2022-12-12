@@ -30,7 +30,7 @@ export function Letter(props: LetterProps) {
   };
 
   let className = `
-    text-center uppercase text-5xl w-20 h-20 border-4 border-purple-900 rounded-md 
+    text-center uppercase text-5xl w-20 h-20 border-4 border-purple-900 rounded-md caret-transparent 
     focus:border-purple-600 focus:ring-purple-600 focus:ring-1 focus:outline-none
   `
 
