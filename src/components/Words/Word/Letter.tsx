@@ -1,32 +1,41 @@
-import { useState } from "react"
+import {useState } from "react"
 import { WordStatus } from "."
+import { checkIfIsValidLetter } from "../../../utils/check-if-is-valid-letter"
 
 
 type LetterProps = {
   index: number
   wordStatus: WordStatus
+  wordPosition: number
   correctWord: string[]
   handleLetterChange: (value: any, index: number) => void
   handleEnterPress: () => void
+  changeFocusOnKeyPressed: (letterIndex: number, keyPressed: string) => void
 }
 
 export function Letter(props: LetterProps) {
-  const { index, correctWord, wordStatus, handleLetterChange, handleEnterPress } = props
+  const { index, correctWord, wordPosition, wordStatus, handleLetterChange, handleEnterPress, changeFocusOnKeyPressed } = props
 
   const [letter, setLetter] = useState('')
 
-  const handleChange = (event: any) => {
-    const result = event.target.value.replace(/[^a-z]/gi, '');
-    setLetter(result);
-    if (result) {
-      handleLetterChange(result, index);
-    }
-  };
-
   const handleKeyDown = (event: any) => {
+    console.log('key down', event)
+
+    if (checkIfIsValidLetter(event.key)) {
+      setLetter(event.key)
+      handleLetterChange(event.key, index)
+    }
+
+    if (event.key === 'Backspace') {
+      setLetter('')
+      handleLetterChange('', index)
+    }
+
     if (event.key === 'Enter') {
       handleEnterPress()
     }
+
+    changeFocusOnKeyPressed(index, event.key)
   };
 
   let className = `
@@ -63,11 +72,10 @@ export function Letter(props: LetterProps) {
   return (
     <div className="m-1">
       <input 
-        id="letter" 
+        id={"word-" + wordPosition + "-letter-" + index}
         type="text"
         autoComplete="off" 
         value={letter}
-        onChange={handleChange} 
         onKeyDown={handleKeyDown}
         maxLength={1} 
         className={className}

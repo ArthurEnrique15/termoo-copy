@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { checkIfIsValidLetter } from "../../../utils/check-if-is-valid-letter";
 import { Letter } from "./Letter";
 
 const WORD_SIZE = 5;
@@ -33,6 +34,45 @@ export function Word({ wordPosition, wordActive, handleWordComplete }: WordProps
     }
   }
 
+  function changeFocusOnKeyPressed(letterIndex: number, keyPressed: string) {
+    console.log('keyPressed', keyPressed)
+    console.log('letterIndex', letterIndex)
+    switch (keyPressed) {
+      case 'ArrowLeft':
+        goToPreviousLetter()
+        break;
+
+      case 'ArrowRight':
+        goToNextLetter()
+        break;
+
+      case 'Backspace':
+        goToPreviousLetter()
+        break;
+
+      default:
+        if (keyPressed.length === 1 && checkIfIsValidLetter(keyPressed))
+          goToNextLetter()
+        break;
+    }
+    
+    function goToPreviousLetter() {
+      if (letterIndex > 0) {
+        const previousLetter = document.getElementById(`word-${wordPosition}-letter-${letterIndex - 1}`)
+        if (previousLetter) {
+          previousLetter.focus()
+        }
+      }
+    }
+
+    function goToNextLetter() {
+      const nextLetter = document.getElementById(`word-${wordPosition}-letter-${letterIndex + 1}`)
+      if (nextLetter) {
+        nextLetter.focus()
+      }
+    }
+  }
+
   function getWordStatus(): WordStatus {
     if (wordIsComplete) {
       return 'done'
@@ -49,10 +89,12 @@ export function Word({ wordPosition, wordActive, handleWordComplete }: WordProps
         <div key={index}>
           <Letter 
             index={index} 
+            wordPosition={wordPosition}
             wordStatus={getWordStatus()}
             correctWord={correctWord}
             handleLetterChange={handleLetterChange} 
             handleEnterPress={handleEnterPress}
+            changeFocusOnKeyPressed={changeFocusOnKeyPressed}
           />
         </div>
       ))}
