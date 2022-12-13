@@ -79,6 +79,7 @@ export function Letter(props: LetterProps) {
         onKeyDown={handleKeyDown}
         maxLength={1} 
         className={className}
+        autoFocus={wordPosition === 0 && index === 0}
       />
     </div>
   )
