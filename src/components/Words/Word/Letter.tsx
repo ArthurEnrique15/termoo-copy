@@ -26,7 +26,7 @@ export function Letter(props: LetterProps) {
       handleLetterChange(event.key, index)
     }
 
-    if (event.key === 'Backspace') {
+    if (event.key === 'Backspace' || event.key === 'Delete') {
       setLetter('')
       handleLetterChange('', index)
     }

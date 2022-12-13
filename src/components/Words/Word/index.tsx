@@ -37,23 +37,21 @@ export function Word({ wordPosition, wordActive, handleWordComplete }: WordProps
   function changeFocusOnKeyPressed(letterIndex: number, keyPressed: string) {
     console.log('keyPressed', keyPressed)
     console.log('letterIndex', letterIndex)
-    switch (keyPressed) {
-      case 'ArrowLeft':
-        goToPreviousLetter()
-        break;
 
-      case 'ArrowRight':
-        goToNextLetter()
-        break;
+    const actions = {
+      ArrowLeft: () => goToPreviousLetter(),
+      ArrowRight: () => goToNextLetter(),
+      Backspace: () => goToPreviousLetter(),
+      Delete: () => goToPreviousLetter(),
+      validLetter: () => goToNextLetter(),
+    }
 
-      case 'Backspace':
-        goToPreviousLetter()
-        break;
-
-      default:
-        if (keyPressed.length === 1 && checkIfIsValidLetter(keyPressed))
-          goToNextLetter()
-        break;
+    if (keyPressed.length === 1 && checkIfIsValidLetter(keyPressed)) {
+      actions.validLetter()
+    } else {
+      try {
+        actions[keyPressed as keyof typeof actions]()
+      } catch (e) {}
     }
     
     function goToPreviousLetter() {
