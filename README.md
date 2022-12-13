@@ -21,3 +21,5 @@ Abaixo estão algumas features futuras que planejo desenvolver:
 - [ ] implementar o teclado virtual
 - [ ] gerar a palavra aleatoriamente
 - [ ] permitir apenas palavras reais e exibir mensagem de erro caso digite uma palavra inválida 
+- [ ] modo de palavra diária
+- [ ] modo infinito com contador de level
